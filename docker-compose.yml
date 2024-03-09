@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  app:
+    container_name: golang_container
+    tty: true
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+    ports:
+      - 8080:8080
+    restart: on-failure
+    volumes:
+      - .:/app
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    container_name: postgres_container
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    environment:
+      - POSTGRES_USER=fatec
+      - POSTGRES_PASSWORD=Fatec@123!
+      - POSTGRES_DB=fatec-challenge
+    ports:
+      - "5432:5432"
